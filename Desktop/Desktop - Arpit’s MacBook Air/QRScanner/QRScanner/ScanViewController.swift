@@ -37,7 +37,7 @@ class ScanViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegat
          let metaDataOutput =  AVCaptureMetadataOutput()
          captureSession.addOutput(metaDataOutput)
 
-         // MARK:- Delegate properties
+         // Setting self as MetaData Receiver Delegate which will be taken care of in the del methods
  
          /* process of capturing is highly time consuming. It's preferred to dispatch
           this process on a serial queue */
@@ -58,8 +58,13 @@ class ScanViewController: UIViewController,AVCaptureMetadataOutputObjectsDelegat
          view.layer.addSublayer(videoPreviewLayer!)
          view.bringSubview(toFront: messageLabel)
          
-         // and now, the video recording takes place asynchronously 
-         
+         // and now, the video recording takes place asynchronously
          captureSession.startRunning()
+        
+        // QR Scanning logic 
+        
+        // MARK:- AVCaptureMetadataOutputObjects Delegate Methods 
+        
+        
     }
  }
