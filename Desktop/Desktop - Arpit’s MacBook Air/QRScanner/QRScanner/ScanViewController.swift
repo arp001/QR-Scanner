@@ -19,7 +19,7 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // and now, the video recording takes place asynchronously
+        print("viewWillAppear called")
         if (captureSession.isRunning == false) {
             captureSession.startRunning()
         }
@@ -31,13 +31,15 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
             captureSession.stopRunning()
         }
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         captureSession = AVCaptureSession()
         qrFrameView = UIView()
+        qrFrameView.tintColor = UIColor.green
         
-             // this is the capture device which captures the video
+        // this is the capture device which captures the video
         let captureDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
         var input =  AVCaptureDeviceInput()
         do {
@@ -60,7 +62,7 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
         
 
         // instantiating output now
-
+        
         let metaDataOutput =  AVCaptureMetadataOutput()
         
         if (captureSession.canAddOutput(metaDataOutput)) {
@@ -87,7 +89,6 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
         print("Input: \(captureSession.inputs)")
         print("Output: \(captureSession.outputs)")
         captureSession.startRunning()
-    // QR Scanning logic
     }
     
     
@@ -104,22 +105,11 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
     }
     
     // MARK:- AVCaptureMetadataOutputObjects Delegate Methods
+    
     func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [Any]!, from connection: AVCaptureConnection!) {
-        captureSession.stopRunning()
-        print("in delegate")
-        // check if metadataObject is nil or empty 
         
-        if metadataObjects == nil || metadataObjects.isEmpty {
-            qrFrameView.frame = CGRect.zero // there is on qrFrame if there is no QR code
-            DispatchQueue.main.async {
-                self.messageLabel.text = "Looks like there's nothing here..."
-            }
-            return
-        }
-        
-        // else we have valid metadata
-        
-        let metadataObject = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
+        let metadataObject = metadataObjects.first as! AVMetadataMachineReadableCodeObject
+    
         
         // now this metadata can be of any type. The type that we are interested in 
         // is MetaData related to QRCode
@@ -129,7 +119,9 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
             let qrCodeObject = videoPreviewLayer.transformedMetadataObject(for: metadataObject)
             // tranforedMetadataObject returns a metadataObject whose visual properties have been converted into layer coordinates and can be extracted from this object 
             
-            qrFrameView.frame = (qrCodeObject?.bounds)!
+            if let frameBounds = qrCodeObject?.bounds {
+                qrFrameView.frame = frameBounds
+            }
             
             if metadataObject.stringValue != nil {
                 print("got the string value!")
