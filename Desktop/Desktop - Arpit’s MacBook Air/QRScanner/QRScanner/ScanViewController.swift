@@ -37,7 +37,9 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
         
         captureSession = AVCaptureSession()
         qrFrameView = UIView()
-        qrFrameView.tintColor = UIColor.green
+        qrFrameView.layer.borderWidth = 1
+        
+        qrFrameView.layer.borderColor = UIColor.red.cgColor
         
         // this is the capture device which captures the video
         let captureDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
@@ -92,11 +94,10 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
     }
     
     
-    private func openUrl(urlString: String) {
-        guard let url = URL(string: urlString) else {
-            return
-        }
-        
+    private func openUrl(url: URL) {
+        captureSession.startRunning()
+        print("in open URL")
+
         if #available(iOS 10.0, *) {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         } else {
@@ -104,9 +105,22 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
         }
     }
     
+    private func isURL(url: URL) -> Bool {
+        print("URL is: \(url)")
+        if (UIApplication.shared.canOpenURL(url) == false) {
+            print("False")
+            return false
+        }
+        return true
+    }
+    
     // MARK:- AVCaptureMetadataOutputObjects Delegate Methods
     
     func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [Any]!, from connection: AVCaptureConnection!) {
+        
+        if(metadataObjects == nil || metadataObjects.first == nil) {
+            return 
+        }
         
         let metadataObject = metadataObjects.first as! AVMetadataMachineReadableCodeObject
     
@@ -120,6 +134,7 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
             // tranforedMetadataObject returns a metadataObject whose visual properties have been converted into layer coordinates and can be extracted from this object 
             
             if let frameBounds = qrCodeObject?.bounds {
+                print("Frame Bounds are: \(frameBounds)")
                 qrFrameView.frame = frameBounds
             }
             
@@ -129,8 +144,13 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
                 DispatchQueue.main.async {
                     self.messageLabel.text = "Last Scanned: " + metadataObject.stringValue
                     AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-                    
-                    self.openUrl(urlString: metadataObject.stringValue)
+                }
+                
+                let url = URL(string: metadataObject.stringValue)
+                
+                if(url != nil && isURL(url: url!)) {
+                    captureSession.stopRunning()
+                    openUrl(url: url!)
                 }
             }
         }
