@@ -6,6 +6,8 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -21,25 +23,52 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Searching..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tIF-r7-Bd6">
-                                <rect key="frame" x="0.0" y="622" width="375" height="45"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="45" id="Maq-E3-kTd"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="18"/>
-                                <color key="textColor" name="highlightColor" catalog="System" colorSpace="catalog"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="t6h-Cx-93v">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <subviews>
+                                    <view alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eEU-1r-cZ8" userLabel="mainView">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="622"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="faI-YA-lmJ" userLabel="innerView">
+                                                <rect key="frame" x="51.5" y="186.5" width="272" height="249"/>
+                                                <color key="backgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="faI-YA-lmJ" secondAttribute="height" multiplier="311:284" id="8bj-ew-o0M"/>
+                                                </constraints>
+                                            </view>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="faI-YA-lmJ" firstAttribute="centerY" secondItem="eEU-1r-cZ8" secondAttribute="centerY" id="9Kf-b6-85R"/>
+                                            <constraint firstItem="faI-YA-lmJ" firstAttribute="height" secondItem="eEU-1r-cZ8" secondAttribute="height" multiplier="0.4" id="OY9-0X-Z6Z"/>
+                                            <constraint firstItem="faI-YA-lmJ" firstAttribute="centerX" secondItem="eEU-1r-cZ8" secondAttribute="centerX" id="XVh-kF-urs"/>
+                                        </constraints>
+                                    </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Searching..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tIF-r7-Bd6">
+                                        <rect key="frame" x="0.0" y="622" width="375" height="45"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="45" id="Maq-E3-kTd"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="18"/>
+                                        <color key="textColor" name="highlightColor" catalog="System" colorSpace="catalog"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="tIF-r7-Bd6" secondAttribute="trailing" id="AH4-X7-Me5"/>
-                            <constraint firstItem="tIF-r7-Bd6" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="UIM-sz-QEw"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="tIF-r7-Bd6" secondAttribute="bottom" id="uSR-cj-0cc"/>
+                            <constraint firstItem="t6h-Cx-93v" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="4LT-aU-cgw"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="t6h-Cx-93v" secondAttribute="bottom" id="NmN-T4-G06"/>
+                            <constraint firstItem="t6h-Cx-93v" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="TiD-AS-Rpq"/>
+                            <constraint firstItem="t6h-Cx-93v" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="XCa-NX-qtg"/>
+                            <constraint firstAttribute="trailing" secondItem="t6h-Cx-93v" secondAttribute="trailing" id="ZPd-1f-k1a"/>
+                            <constraint firstItem="t6h-Cx-93v" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="yYn-WF-I0O"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="mainSV" destination="t6h-Cx-93v" id="YKL-d0-vsM"/>
                         <outlet property="messageLabel" destination="tIF-r7-Bd6" id="Z4m-Sb-yYZ"/>
                     </connections>
                 </viewController>

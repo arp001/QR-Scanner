@@ -16,6 +16,11 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
     var captureSession: AVCaptureSession!
     var videoPreviewLayer: AVCaptureVideoPreviewLayer!
     
+    @IBOutlet weak var mainSV: UIStackView!
+    
+    private func bringElementsToFront() {
+        view.bringSubview(toFront: mainSV)
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -86,8 +91,7 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
         videoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
         videoPreviewLayer.frame = view.layer.bounds
         view.layer.addSublayer(videoPreviewLayer)
-        view.bringSubview(toFront: messageLabel)
-        
+        bringElementsToFront()
         print("Input: \(captureSession.inputs)")
         print("Output: \(captureSession.outputs)")
         captureSession.startRunning()
